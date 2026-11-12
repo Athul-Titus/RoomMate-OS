@@ -104,3 +104,4 @@ Target AWS for production: ECS Fargate, RDS, ElastiCache, S3, CloudFront, Route 
 - Higher operational cost than Railway/Render.
 - More control over security, networking, and scaling.
 - Can be migrated to GCP or Azure if needed — Docker-based deployment is portable.
+

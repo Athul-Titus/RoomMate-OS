@@ -149,3 +149,4 @@ Client                     API                        DB
 - Pagination: `?page=1&page_size=20`, response includes `meta.total`, `meta.page`, `meta.page_size`
 - Never return stack traces to clients
 - Request ID: generated per request, returned in `X-Request-ID` header
+

@@ -26,3 +26,4 @@ Implementation begins after the Next.js web app (Phase 1) is validated.
 - Discovery screens
 
 Do not start this until the web app auth and profile flows are stable and tested.
+

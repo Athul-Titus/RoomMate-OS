@@ -137,3 +137,4 @@ Breaking changes increment the version: `/api/v2/`. Non-breaking additions are m
 ## OpenAPI docs
 
 Available at `/docs` (Swagger UI) and `/redoc` in local and staging environments. Disabled in production.
+

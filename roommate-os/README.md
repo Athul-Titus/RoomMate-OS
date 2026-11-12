@@ -105,3 +105,4 @@ Phase 0 — Engineering foundation in progress.
 This platform does not hold deposits or rent. It does not provide legal advice. Rental agreements recorded in the platform are user-uploaded documents; the platform does not guarantee their enforceability.
 
 See Privacy Policy and Terms of Service in the web app.
+

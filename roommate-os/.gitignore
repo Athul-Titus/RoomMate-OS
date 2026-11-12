@@ -75,3 +75,4 @@ logs/
 # ── Uploads / local object storage ───────────────────────
 uploads/
 minio_data/
+
