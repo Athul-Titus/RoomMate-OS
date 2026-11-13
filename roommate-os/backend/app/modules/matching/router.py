@@ -44,3 +44,4 @@ async def list_mutual_matches(
     db: Annotated[AsyncSession, Depends(get_db)],
 ) -> list[MutualMatchResponse]:
     return await MatchingService.list_mutual_matches(db, current_user.id)
+

@@ -80,3 +80,4 @@ async def upsert_dealbreaker(
     result = await db.execute(stmt)
     await db.flush()
     return result.scalar_one()
+

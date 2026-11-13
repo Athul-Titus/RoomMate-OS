@@ -60,3 +60,4 @@ async def set_dealbreaker(
     db: Annotated[AsyncSession, Depends(get_db)],
 ) -> DealbreakerResponse:
     return await LifestyleService.set_dealbreaker(db, current_user.id, req)
+

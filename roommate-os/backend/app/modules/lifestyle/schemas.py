@@ -51,3 +51,4 @@ class DealbreakerResponse(BaseModel):
 
     question_key: str
     unacceptable_values: list[str]
+

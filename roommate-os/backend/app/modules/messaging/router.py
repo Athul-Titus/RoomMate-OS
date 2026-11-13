@@ -86,3 +86,4 @@ async def websocket_conversation(
         manager.disconnect(conversation_id, websocket)
     except Exception:
         manager.disconnect(conversation_id, websocket)
+

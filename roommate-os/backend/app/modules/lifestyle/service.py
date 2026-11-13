@@ -62,3 +62,4 @@ class LifestyleService:
             question_key=db_obj.question_key,
             unacceptable_values=db_obj.unacceptable_values,
         )
+

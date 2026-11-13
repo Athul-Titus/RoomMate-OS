@@ -121,3 +121,4 @@ def calculate_compatibility(
         "alignments": alignments,
         "potential_frictions": potential_frictions,
     }
+

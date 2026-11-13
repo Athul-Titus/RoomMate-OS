@@ -48,3 +48,4 @@ class MutualMatchResponse(BaseModel):
     compatibility_score: int
     matched_at: datetime
     conversation_id: Optional[uuid.UUID] = None
+

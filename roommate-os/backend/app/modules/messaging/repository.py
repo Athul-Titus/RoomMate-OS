@@ -128,3 +128,4 @@ async def mark_messages_read(
     )
     await db.execute(stmt)
     await db.flush()
+

@@ -55,3 +55,4 @@ class UserDealbreaker(UUIDMixin, TimestampMixin, Base):
     question_key: Mapped[str] = mapped_column(String(50), nullable=False)
     unacceptable_values: Mapped[list[str]] = mapped_column(JSONB, nullable=False)  # List of values user cannot tolerate
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
+

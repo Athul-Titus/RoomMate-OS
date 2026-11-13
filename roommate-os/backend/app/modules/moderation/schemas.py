@@ -16,3 +16,4 @@ class ReportUserRequest(BaseModel):
 class BlockResponse(BaseModel):
     blocked_user_id: uuid.UUID
     status: str
+

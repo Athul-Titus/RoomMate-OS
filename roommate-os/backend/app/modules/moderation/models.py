@@ -36,3 +36,4 @@ class UserReport(UUIDMixin, TimestampMixin, Base):
     reason: Mapped[str] = mapped_column(String(100), nullable=False)
     description: Mapped[str | None] = mapped_column(Text, nullable=True)
     status: Mapped[str] = mapped_column(String(30), default="pending", nullable=False)
+
