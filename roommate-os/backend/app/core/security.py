@@ -4,25 +4,29 @@ from __future__ import annotations
 import hashlib
 from datetime import datetime, timedelta, timezone
 
+import bcrypt
 from jose import JWTError, jwt
-from passlib.context import CryptContext
 
 from app.core.config import get_settings
 from app.core.exceptions import UnauthorizedError
-
-_pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 ALGORITHM = "HS256"
 
 
 def hash_password(plain: str) -> str:
-    """Hash a plaintext password using bcrypt. Never store plaintext."""
-    return _pwd_context.hash(plain)
+    """Hash a plaintext password using bcrypt with 12 rounds. Never store plaintext."""
+    pwd_bytes = plain.encode("utf-8")[:72]
+    salt = bcrypt.gensalt(rounds=12)
+    return bcrypt.hashpw(pwd_bytes, salt).decode("utf-8")
 
 
 def verify_password(plain: str, hashed: str) -> bool:
     """Verify a plaintext password against a bcrypt hash."""
-    return _pwd_context.verify(plain, hashed)
+    try:
+        pwd_bytes = plain.encode("utf-8")[:72]
+        return bcrypt.checkpw(pwd_bytes, hashed.encode("utf-8"))
+    except Exception:
+        return False
 
 
 def create_access_token(subject: str, extra: dict | None = None) -> str:
