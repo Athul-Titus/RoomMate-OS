@@ -46,20 +46,18 @@ async def get_candidate_users(
 
 
 async def get_user_answers_map(db: AsyncSession, user_id: uuid.UUID) -> dict[str, str]:
+    from app.modules.lifestyle.models import LifestyleQuestion
     stmt = (
-        select(LifestyleAnswer)
+        select(LifestyleQuestion.dimension, LifestyleQuestion.question_key, LifestyleAnswer.answer_value)
+        .join(LifestyleQuestion, LifestyleAnswer.question_id == LifestyleQuestion.id)
         .where(LifestyleAnswer.user_id == user_id)
     )
     res = await db.execute(stmt)
-    answers = res.scalars().all()
-    # Also fetch question dimensions
-    ans_map = {}
-    for a in answers:
-        q_res = await db.execute(select(a.question.__class__).where(a.question.__class__.id == a.question_id))
-        q = q_res.scalar_one_or_none()
-        if q:
-            ans_map[q.dimension] = a.answer_value
-            ans_map[q.question_key] = a.answer_value
+    rows = res.all()
+    ans_map: dict[str, str] = {}
+    for dim, q_key, val in rows:
+        ans_map[dim] = val
+        ans_map[q_key] = val
     return ans_map
 
 
@@ -126,14 +124,10 @@ async def record_action(
         match_obj = res.scalar_one()
 
         # Check or Create Conversation
-        conv_stmt = (
-            select(Conversation.id)
-            .join(ConversationMember, Conversation.id == ConversationMember.conversation_id)
-            .where(ConversationMember.user_id.in_([user_a, user_b]))
-            .group_by(Conversation.id)
-            .having(select(func.count(ConversationMember.id)).filter(ConversationMember.user_id.in_([user_a, user_b])).correlate(Conversation).as_scalar() == 2)
-        )
-        # Simplified conversation creation for match
+        existing_conv = await get_match_conversation(db, user_a, user_b)
+        if existing_conv:
+            return True, existing_conv
+
         conv = Conversation(id=uuid.uuid4())
         db.add(conv)
         await db.flush()

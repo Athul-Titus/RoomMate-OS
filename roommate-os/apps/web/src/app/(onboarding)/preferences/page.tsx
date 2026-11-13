@@ -48,14 +48,13 @@ function PreferencesForm() {
   const onSubmit = async (values: PreferencesFormValues) => {
     setApiError(null)
     try {
-      await apiFetch('/profiles/me/preferences', {
+      await apiFetch('/profiles/preferences', {
         method: 'PUT',
         body: JSON.stringify(values),
       })
-      router.push('/dashboard')
+      router.push('/onboarding/lifestyle')
     } catch {
-      // In offline / local mock mode or if backend route is being set up, proceed smoothly
-      router.push('/dashboard')
+      router.push('/onboarding/lifestyle')
     }
   }
 
@@ -64,7 +63,7 @@ function PreferencesForm() {
       <div className="w-full max-w-xl">
         <div className="mb-6 flex items-center justify-between">
           <span className="text-xs font-semibold uppercase tracking-wider text-[#4338CA]">
-            Step 2 of 2: Search Preferences
+            Step 2 of 3: Search Preferences
           </span>
           <Link
             href="/dashboard"
@@ -136,7 +135,7 @@ function PreferencesForm() {
               isLoading={isSubmitting}
               className="w-full mt-4"
             >
-              Complete Setup and Go to Dashboard
+              Save Preferences and Continue to Lifestyle Assessment
             </Button>
           </form>
         </Card>

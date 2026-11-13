@@ -26,6 +26,16 @@ async def block_user(
     return BlockResponse(blocked_user_id=user_id, status="blocked")
 
 
+@router.delete("/users/{user_id}/block")
+async def unblock_user(
+    user_id: uuid.UUID,
+    current_user: Annotated[User, Depends(get_current_user)],
+    db: Annotated[AsyncSession, Depends(get_db)],
+) -> dict[str, str]:
+    await repo.unblock_user(db, current_user.id, user_id)
+    return {"message": "User unblocked successfully"}
+
+
 @router.post("/reports")
 async def report_user(
     req: ReportUserRequest,

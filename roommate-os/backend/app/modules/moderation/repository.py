@@ -23,6 +23,16 @@ async def block_user(db: AsyncSession, user_id: uuid.UUID, blocked_user_id: uuid
     await db.flush()
 
 
+async def unblock_user(db: AsyncSession, user_id: uuid.UUID, blocked_user_id: uuid.UUID) -> None:
+    from sqlalchemy import delete
+    stmt = delete(UserBlock).where(
+        UserBlock.user_id == user_id,
+        UserBlock.blocked_user_id == blocked_user_id,
+    )
+    await db.execute(stmt)
+    await db.flush()
+
+
 async def create_report(
     db: AsyncSession,
     reporter_id: uuid.UUID,
