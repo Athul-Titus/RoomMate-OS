@@ -61,10 +61,10 @@ export default function DashboardPage() {
               </p>
             </div>
             <Link
-              href="/onboarding/preferences"
+              href="/discover"
               className="inline-flex items-center text-sm font-medium text-[#4338CA] hover:text-[#3730A3] gap-1"
             >
-              <span>Manage search filters</span>
+              <span>Browse candidate feed</span>
               <ArrowRight className="w-4 h-4" />
             </Link>
           </Card>

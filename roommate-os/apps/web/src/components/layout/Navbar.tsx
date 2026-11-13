@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Menu, X, Home, Search, Users, Building2, User } from 'lucide-react'
+import { Menu, X, Home, Search, Users, Building2, User, Sparkles } from 'lucide-react'
 import { useAuth } from '@/lib/auth'
 import { cn } from '@/lib/utils'
 
@@ -14,11 +14,11 @@ interface NavLink {
 }
 
 const NAV_LINKS: NavLink[] = [
-  { href: '/dashboard', label: 'Discover', icon: Search },
+  { href: '/dashboard', label: 'Dashboard', icon: Home },
+  { href: '/discover', label: 'Discover', icon: Search },
   { href: '/matches', label: 'Matches', icon: Users },
-  { href: '/groups', label: 'Groups', icon: Home },
-  { href: '/properties', label: 'My Home', icon: Building2 },
-  { href: '/profile', label: 'Profile', icon: User },
+  { href: '/onboarding/lifestyle', label: 'Habits Quiz', icon: Sparkles },
+  { href: '/onboarding/profile', label: 'Profile', icon: User },
 ]
 
 export function Navbar() {
