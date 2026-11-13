@@ -79,7 +79,7 @@ function PreferencesForm() {
             Accommodation Preferences
           </h1>
           <p className="text-sm text-[#475569] mb-6">
-            Help us filter compatible flatmates and properties within your budget range in Bengaluru.
+            Help us filter compatible flatmates and properties within your budget range in Kakkanad & Infopark, Kochi.
           </p>
 
           {apiError && (

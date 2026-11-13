@@ -29,7 +29,7 @@ export default function DashboardPage() {
               <span>Complete your living preferences</span>
             </h2>
             <p className="text-sm text-[#475569] mt-1">
-              Set your target budget, preferred neighbourhoods in Bengaluru, and habits to view compatible roommate matches.
+              Set your target budget, preferred neighbourhoods around Kakkanad & Infopark, and habits to view compatible roommate matches.
             </p>
           </div>
           <Link

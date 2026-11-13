@@ -36,13 +36,13 @@ export default function HomePage() {
         {/* Hero Section */}
         <section className="max-w-4xl mx-auto px-4 pt-16 pb-14 text-center">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-[#EEF2FF] text-[#4338CA] text-xs font-medium mb-6">
-            Pilot launch in Bengaluru
+            Pilot launch in Kochi (Kakkanad & Infopark)
           </div>
           <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#0F172A] leading-tight mb-4">
             Shared-rental platform for working professionals
           </h1>
           <p className="text-base sm:text-lg text-[#475569] max-w-2xl mx-auto mb-8 leading-relaxed">
-            Connect with verified roommates based on genuine lifestyle compatibility. Form a group, discover suitable flats in Bengaluru, and coordinate rental decisions together.
+            Connect with verified roommates based on genuine lifestyle compatibility. Form a group, discover suitable flats in Kakkanad and Infopark, and coordinate rental decisions together.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
