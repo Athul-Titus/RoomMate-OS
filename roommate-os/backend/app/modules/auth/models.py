@@ -46,7 +46,7 @@ class User(UUIDMixin, TimestampMixin, Base):
     )
 
 
-class RefreshToken(UUIDMixin, Base):
+class RefreshToken(UUIDMixin, TimestampMixin, Base):
     __tablename__ = "refresh_tokens"
 
     user_id: Mapped[uuid.UUID] = mapped_column(
@@ -58,12 +58,11 @@ class RefreshToken(UUIDMixin, Base):
     token_hash: Mapped[str] = mapped_column(String(64), unique=True, nullable=False, index=True)
     expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
     revoked_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
-    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
 
     user: Mapped[User] = relationship("User", back_populates="refresh_tokens")
 
 
-class AuditLog(UUIDMixin, Base):
+class AuditLog(UUIDMixin, TimestampMixin, Base):
     __tablename__ = "audit_logs"
 
     actor_user_id: Mapped[uuid.UUID | None] = mapped_column(
@@ -77,7 +76,6 @@ class AuditLog(UUIDMixin, Base):
     entity_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True), nullable=True)
     # NEVER put passwords, tokens, or OTPs in metadata_json
     metadata_json: Mapped[dict | None] = mapped_column(JSONB, nullable=True)
-    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
 
     actor: Mapped[User | None] = relationship(
         "User", back_populates="audit_logs", foreign_keys=[actor_user_id]

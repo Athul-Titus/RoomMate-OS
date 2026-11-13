@@ -71,6 +71,10 @@ def create_app() -> FastAPI:
     # ── Exception handlers ────────────────────────────────────────────────────
     register_exception_handlers(app)
 
+    @app.get("/health", tags=["ops"])
+    async def root_health():
+        return {"status": "ok"}
+
     # ── Routers ───────────────────────────────────────────────────────────────
     from app.api.router import api_router
     app.include_router(api_router)

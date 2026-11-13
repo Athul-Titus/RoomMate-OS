@@ -2,19 +2,30 @@
 DEMO SEED SCRIPT — FOR LOCAL DEVELOPMENT ONLY.
 DO NOT RUN IN PRODUCTION.
 
-Seeds:
+Creates all tables if they do not exist, then seeds:
 - City: Kochi, Kerala
-- Neighbourhoods: Kakkanad, Infopark Phase 1, Infopark Phase 2, SmartCity, Edachira, Vazhakkala, Thrikkakara, Palarivattom
-- Demo users with hashed passwords (bcrypt)
+- Neighbourhoods: Kakkanad, Infopark Phase 1 & 2, SmartCity, Edachira, Vazhakkala, Thrikkakara, Palarivattom
 """
 
 import asyncio
+import os
+import sys
 import uuid
+from pathlib import Path
+
+# Ensure backend root directory is in sys.path
+backend_dir = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(backend_dir))
+
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import text
 
-# Default local async URL (Docker Compose or local Postgres)
+# Import declarative Base and all models so metadata knows all tables
+from app.core.database import Base
+import app.modules.auth.models  # noqa: F401
+import app.modules.profiles.models  # noqa: F401
+
 DATABASE_URL = "postgresql+asyncpg://roommate:roommate@localhost:5432/roommate_os"
 
 # Fixed UUIDs for idempotency
@@ -33,16 +44,23 @@ NEIGHBOURHOODS = [
 
 async def seed():
     engine = create_async_engine(DATABASE_URL, echo=False)
-    async_session = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
+    
+    # 1. Create all tables if they do not exist
+    print("🛠 Creating database tables...")
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+    print("✅ Tables verified!")
 
+    # 2. Seed Kochi and Neighbourhoods
+    async_session = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
     async with async_session() as session:
         print("🌱 Seeding Kochi (Kakkanad & Infopark) city and neighbourhoods...")
         
         # Insert City
         await session.execute(
             text("""
-            INSERT INTO cities (id, name, state, country_code, timezone, active)
-            VALUES (:id, 'Kochi', 'Kerala', 'IN', 'Asia/Kolkata', true)
+            INSERT INTO cities (id, name, state, country_code, timezone, active, created_at, updated_at)
+            VALUES (:id, 'Kochi', 'Kerala', 'IN', 'Asia/Kolkata', true, NOW(), NOW())
             ON CONFLICT (id) DO NOTHING;
             """),
             {"id": KOCHI_CITY_ID}
@@ -52,8 +70,8 @@ async def seed():
         for name, n_id in NEIGHBOURHOODS:
             await session.execute(
                 text("""
-                INSERT INTO neighbourhoods (id, city_id, name, active)
-                VALUES (:id, :city_id, :name, true)
+                INSERT INTO neighbourhoods (id, city_id, name, active, created_at, updated_at)
+                VALUES (:id, :city_id, :name, true, NOW(), NOW())
                 ON CONFLICT (id) DO NOTHING;
                 """),
                 {"id": n_id, "city_id": KOCHI_CITY_ID, "name": name}
@@ -62,6 +80,7 @@ async def seed():
         await session.commit()
         print("✅ Seed complete! Kochi and 8 Kakkanad IT corridors ready.")
 
+    await engine.dispose()
+
 if __name__ == "__main__":
     asyncio.run(seed())
-

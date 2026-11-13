@@ -15,7 +15,7 @@ _WORK_MODE = Enum("office", "hybrid", "remote", name="work_mode_enum")
 _VISIBILITY = Enum("public", "matches_only", "private", name="profile_visibility_enum")
 
 
-class City(Base):
+class City(TimestampMixin, Base):
     __tablename__ = "cities"
 
     id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
@@ -24,14 +24,13 @@ class City(Base):
     country_code: Mapped[str] = mapped_column(String(10), nullable=False, default="IN", server_default="IN")
     timezone: Mapped[str] = mapped_column(String(50), nullable=False, default="Asia/Kolkata", server_default="Asia/Kolkata")
     active: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True, server_default="true")
-    created_at: Mapped[datetime] = mapped_column(nullable=False)
 
     neighbourhoods: Mapped[list[Neighbourhood]] = relationship(
         "Neighbourhood", back_populates="city", cascade="all, delete-orphan"
     )
 
 
-class Neighbourhood(Base):
+class Neighbourhood(TimestampMixin, Base):
     __tablename__ = "neighbourhoods"
 
     id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
@@ -40,7 +39,6 @@ class Neighbourhood(Base):
     )
     name: Mapped[str] = mapped_column(String(100), nullable=False)
     active: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True, server_default="true")
-    created_at: Mapped[datetime] = mapped_column(nullable=False)
 
     city: Mapped[City] = relationship("City", back_populates="neighbourhoods")
 
@@ -67,7 +65,11 @@ class UserProfile(TimestampMixin, Base):
 
     user: Mapped[object] = relationship("User", back_populates="profile")
     preferences: Mapped[UserPreferences | None] = relationship(
-        "UserPreferences", back_populates="profile", uselist=False
+        "UserPreferences",
+        back_populates="profile",
+        uselist=False,
+        foreign_keys="[UserPreferences.user_id]",
+        primaryjoin="UserProfile.user_id == UserPreferences.user_id",
     )
 
 

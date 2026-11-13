@@ -5,7 +5,7 @@ from fastapi import APIRouter
 from fastapi.responses import JSONResponse
 
 from app.modules.auth.router import router as auth_router
-from app.modules.profiles.router import router as profiles_router
+from app.modules.profiles.router import router as profiles_router, locations_router
 
 api_router = APIRouter(prefix="/api/v1")
 
@@ -17,10 +17,10 @@ async def health() -> JSONResponse:
 
 @api_router.get("/ready", tags=["ops"])
 async def ready() -> JSONResponse:
-    """Readiness probe — could check DB here if needed."""
     return JSONResponse({"status": "ready"})
 
 
 # Module routers
 api_router.include_router(auth_router, prefix="/auth", tags=["auth"])
 api_router.include_router(profiles_router, prefix="/profiles", tags=["profiles"])
+api_router.include_router(locations_router, tags=["locations"])
