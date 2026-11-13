@@ -38,9 +38,7 @@ const config: Config = {
         sans: ['var(--font-inter)', 'ui-sans-serif', 'system-ui', 'sans-serif'],
       },
       fontSize: {
-        '3xs': '12px',
-        '2xs': '14px',
-        xs: '14px',
+        xs: '12px',
         sm: '14px',
         base: '16px',
         lg: '18px',
