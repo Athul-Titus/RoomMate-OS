@@ -48,6 +48,7 @@ async def register(
     return TokenResponse(
         access_token=access_token,
         expires_in=settings.access_token_expire_minutes * 60,
+        user=MeResponse.model_validate(user),
     )
 
 
@@ -63,6 +64,7 @@ async def login(
     return TokenResponse(
         access_token=access_token,
         expires_in=settings.access_token_expire_minutes * 60,
+        user=MeResponse.model_validate(user),
     )
 
 

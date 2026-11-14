@@ -43,6 +43,7 @@ async def create_user(
         profile_completion=10,  # display_name gives +10
     )
     db.add(profile)
+    user.profile = profile
     await db.flush()
     return user
 

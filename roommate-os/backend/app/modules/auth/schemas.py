@@ -38,24 +38,26 @@ class LoginRequest(BaseModel):
     password: str
 
 
+class MeResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: uuid.UUID
+    email: str
+    display_name: str
+    account_status: str
+    is_admin: bool
+    created_at: datetime
+    # password_hash is intentionally excluded from all response schemas
+
+
 class TokenResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
     access_token: str
     token_type: str = "bearer"
     expires_in: int  # seconds
+    user: MeResponse | None = None
 
 
 class RefreshRequest(BaseModel):
     refresh_token: str
-
-
-class MeResponse(BaseModel):
-    model_config = ConfigDict(from_attributes=True)
-
-    id: uuid.UUID
-    email: str
-    account_status: str
-    is_admin: bool
-    created_at: datetime
-    # password_hash is intentionally excluded from all response schemas

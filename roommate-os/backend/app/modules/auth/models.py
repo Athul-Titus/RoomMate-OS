@@ -39,11 +39,19 @@ class User(UUIDMixin, TimestampMixin, Base):
         "RefreshToken", back_populates="user", cascade="all, delete-orphan"
     )
     profile: Mapped[UserProfile | None] = relationship(
-        "UserProfile", back_populates="user", uselist=False
+        "UserProfile", back_populates="user", uselist=False, lazy="joined"
     )
     audit_logs: Mapped[list[AuditLog]] = relationship(
         "AuditLog", back_populates="actor", foreign_keys="AuditLog.actor_user_id"
     )
+
+    @property
+    def display_name(self) -> str:
+        # Check __dict__ to avoid triggering lazy loading / greenlet error in async session
+        p = self.__dict__.get("profile")
+        if p is not None and getattr(p, "display_name", None):
+            return p.display_name
+        return self.email.split("@")[0]
 
 
 class RefreshToken(UUIDMixin, TimestampMixin, Base):
